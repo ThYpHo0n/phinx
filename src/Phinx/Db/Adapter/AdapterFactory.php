@@ -64,6 +64,7 @@ class AdapterFactory
      */
     protected $adapters = array(
         'mysql'  => 'Phinx\Db\Adapter\MysqlAdapter',
+        'mysqli' => 'Phinx\Db\Adapter\MysqliAdapter',
         'pgsql'  => 'Phinx\Db\Adapter\PostgresAdapter',
         'sqlite' => 'Phinx\Db\Adapter\SQLiteAdapter',
         'sqlsrv' => 'Phinx\Db\Adapter\SqlServerAdapter',
