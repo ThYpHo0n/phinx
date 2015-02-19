@@ -345,7 +345,17 @@ class MysqliAdapter implements AdapterInterface
      */
     public function execute($sql)
     {
-        $this->query($sql);
+        if(!$this->connection->multi_query($sql)) {
+            throw new \RuntimeException($this->connection->error);
+        }
+
+        do {
+            $this->connection->store_result();
+            if($this->connection->error) {
+                throw new \RuntimeException($this->connection->error);
+            }
+        } while ($this->connection->more_results() && $this->connection->next_result());
+
         return $this->connection->affected_rows;
     }
 
