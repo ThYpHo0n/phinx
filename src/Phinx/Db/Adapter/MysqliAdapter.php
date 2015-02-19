@@ -313,12 +313,12 @@ class MysqliAdapter implements AdapterInterface
                 // @codeCoverageIgnoreEnd
             }
 
+            $db = new \mysqli($options['host'], $options['user'], $options['pass'], $options['name']);
+
             // charset support
             if (!empty($options['charset'])) {
-                $this->query("SET NAMES " . $options['charset']);
+                $db->query("SET NAMES " . $options['charset']);
             }
-
-            $db = new \mysqli($options['host'], $options['user'], $options['pass'], $options['database']);
 
             if ($db->connect_errno) {
                 throw new \InvalidArgumentException(sprintf(
@@ -370,7 +370,13 @@ class MysqliAdapter implements AdapterInterface
      */
     public function fetchAll($sql)
     {
-        return $this->query($sql)->fetch_all();
+        $rows = array();
+        $result = $this->query($sql);
+        while($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+
+        return $rows;
     }
 
     /**
